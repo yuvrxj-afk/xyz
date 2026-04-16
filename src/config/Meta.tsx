@@ -1,3 +1,5 @@
+import { absolutePublicUrl, siteRoot } from '@/lib/basePath';
+
 import { about } from './About';
 import { heroConfig } from './Hero';
 
@@ -18,6 +20,7 @@ export const siteConfig = {
   title: heroConfig.handle,
   description:
     'Full-stack engineer focused on Web3, onchain products, and AI-assisted tooling.',
+  /** Origin only; path comes from NEXT_PUBLIC_BASE_PATH at build time. */
   url: process.env.NEXT_PUBLIC_URL || 'http://localhost:3000',
   ogImage: '/meta/opengraph-image.png',
   author: {
@@ -133,9 +136,11 @@ export function getPageMetadata(pathname: string): PageMeta {
 export function generateMetadata(pathname: string) {
   const pageMeta = getPageMetadata(pathname);
   const isHome = pathname === '/';
+  const root = siteRoot();
+  const ogPath = pageMeta.ogImage || siteConfig.ogImage;
 
   return {
-    metadataBase: new URL(siteConfig.url),
+    metadataBase: new URL(`${root}/`),
     title: isHome
       ? {
           default: heroConfig.displayName,
@@ -147,12 +152,18 @@ export function generateMetadata(pathname: string) {
     authors: [{ name: siteConfig.author.name }],
     creator: siteConfig.author.name,
     icons: {
-      icon: [{ url: avatarIcon, type: 'image/png' }],
-      apple: [{ url: avatarIcon, type: 'image/png', sizes: '180x180' }],
+      icon: [{ url: absolutePublicUrl(avatarIcon), type: 'image/png' }],
+      apple: [
+        {
+          url: absolutePublicUrl(avatarIcon),
+          type: 'image/png',
+          sizes: '180x180',
+        },
+      ],
     },
     openGraph: {
       type: 'website',
-      url: `${siteConfig.url}${pathname}`,
+      url: `${root}${pathname === '/' ? '/' : pathname}`,
       title: isHome
         ? heroConfig.displayName
         : `${pageMeta.title} · ${heroConfig.handle}`,
@@ -160,7 +171,7 @@ export function generateMetadata(pathname: string) {
       siteName: heroConfig.handle,
       images: [
         {
-          url: pageMeta.ogImage || siteConfig.ogImage,
+          url: absolutePublicUrl(ogPath),
           width: 1200,
           height: 630,
           alt: isHome ? heroConfig.displayName : pageMeta.title,
@@ -174,7 +185,7 @@ export function generateMetadata(pathname: string) {
         : `${pageMeta.title} · ${heroConfig.handle}`,
       description: pageMeta.description,
       creator: siteConfig.author.twitter,
-      images: [pageMeta.ogImage || siteConfig.ogImage],
+      images: [absolutePublicUrl(ogPath)],
     },
     robots: {
       index: true,
@@ -188,7 +199,7 @@ export function generateMetadata(pathname: string) {
       },
     },
     alternates: {
-      canonical: `${siteConfig.url}${pathname}`,
+      canonical: `${root}${pathname === '/' ? '/' : pathname}`,
     },
   };
 }
