@@ -1,5 +1,5 @@
 import UmamiAnalytics from '@/components/analytics/UmamiAnalytics';
-import Footer from '@/components/common/Footer';
+import MaybeFooter from '@/components/common/MaybeFooter';
 import Navbar from '@/components/common/Navbar';
 import { ThemeProvider } from '@/components/common/ThemeProviders';
 import { generateMetadata as getMetadata } from '@/config/Meta';
@@ -49,7 +49,7 @@ export default function RootLayout({
             <ReactLenis root>
               <Navbar />
               <div className="pt-16 md:pt-[4.5rem]">{children}</div>
-              <Footer />
+              <MaybeFooter />
               <UmamiAnalytics />
             </ReactLenis>
           </ThemeProvider>
