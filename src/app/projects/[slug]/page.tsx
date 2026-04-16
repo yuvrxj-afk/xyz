@@ -47,17 +47,17 @@ export async function generateMetadata({
 
   return {
     metadataBase: new URL(siteConfig.url),
-    title: `${title} - Project Case Study`,
+    title,
     description,
     openGraph: {
-      title: `${title} - Project Case Study`,
+      title,
       description,
       images: [image],
       type: 'article',
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${title} - Project Case Study`,
+      title,
       description,
       images: [image],
     },

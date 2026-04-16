@@ -1,4 +1,4 @@
-# Sleek Portfolio by ramxcodes
+# Sleek Portfolio
 
 A modern, responsive portfolio website built with Next.js 15, TypeScript, Tailwind CSS, and Shadcn UI. Features a blog system, project showcase, work experience timeline, and contact form with Telegram integration.
 
@@ -8,7 +8,7 @@ A modern, responsive portfolio website built with Next.js 15, TypeScript, Tailwi
 
 Click here to your portfolio template now:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Framxcodes%2Fsleek-portfolio&env=TELEGRAM_BOT_TOKEN,TELEGRAM_CHAT_ID,GEMINI_API_KEY,NEXT_PUBLIC_URL,NEXT_PUBLIC_UMAMI_SRC,NEXT_PUBLIC_UMAMI_ID)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fyuvrxj-afk%2Fsleek-portfolio&env=TELEGRAM_BOT_TOKEN,TELEGRAM_CHAT_ID,GEMINI_API_KEY,NEXT_PUBLIC_URL,NEXT_PUBLIC_UMAMI_SRC,NEXT_PUBLIC_UMAMI_ID)
 
 ## Features
 
@@ -81,7 +81,7 @@ NEXT_PUBLIC_UMAMI_ID="your-umami-website-id"
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/ramxcodes/sleek-portfolio.git
+   git clone https://github.com/yuvrxj-afk/sleek-portfolio.git
    cd sleek-portfolio
    ```
 

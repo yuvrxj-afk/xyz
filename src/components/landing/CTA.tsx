@@ -1,37 +1,56 @@
 'use client';
 
-import { ctaConfig } from '@/config/CTA';
-import { useHapticFeedback } from '@/hooks/use-haptic-feedback';
-import Cal, { getCalApi } from '@calcom/embed-react';
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
-
-import Container from '../common/Container';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '../ui/dialog';
+} from '@/components/ui/dialog';
+import { ctaConfig } from '@/config/CTA';
+import { useHapticFeedback } from '@/hooks/use-haptic-feedback';
+import { cn } from '@/lib/utils';
+import Cal, { getCalApi } from '@calcom/embed-react';
+import { useEffect, useState } from 'react';
+
+import Container from '../common/Container';
+import SectionHeading from '../common/SectionHeading';
 
 interface CallToActionProps {
-  profileImage?: string;
-  profileAlt?: string;
   linkText?: string;
   calLink?: string;
   preText?: string;
+  backgroundVideoSrc?: string;
+  backgroundPosterSrc?: string;
 }
 
 export default function CTA({
-  profileImage = ctaConfig.profileImage,
-  profileAlt = ctaConfig.profileAlt,
   linkText = ctaConfig.linkText,
   calLink = ctaConfig.calLink,
   preText = ctaConfig.preText,
+  backgroundVideoSrc = ctaConfig.backgroundVideoSrc,
+  backgroundPosterSrc = ctaConfig.backgroundPosterSrc,
 }: CallToActionProps) {
   const { triggerHaptic, isMobile } = useHapticFeedback();
   const [showCalPopup, setShowCalPopup] = useState(false);
+  const [reduceMotion, setReduceMotion] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setReduceMotion(mq.matches);
+    const onChange = () => setReduceMotion(mq.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
 
   useEffect(() => {
     const cal = async () => {
@@ -59,69 +78,89 @@ export default function CTA({
     setShowCalPopup(true);
   };
 
+  const showVideo = Boolean(backgroundVideoSrc) && !reduceMotion;
+
   return (
     <>
-      <Container className="mt-20 rounded-md border border-dashed border-black/20 py-8 dark:border-white/10">
-        <div className="mt-6 w-full flex-col px-6 pb-8 sm:flex sm:items-center sm:justify-between sm:px-12">
-          <p className="mb-4 text-center text-base opacity-50 sm:mb-3 md:text-xl">
-            {preText}
-          </p>
-          <div className="mt-4 flex w-full justify-center sm:mt-0 sm:w-auto sm:justify-end">
+      <Container className="mt-0">
+        <SectionHeading subHeading="Contact" heading="Get in touch" />
+        <Card
+          className={cn(
+            'liquid-glass font-body-app relative mt-8 overflow-hidden border-0 py-0 shadow-lg',
+            'min-h-[260px] sm:min-h-[280px]',
+          )}
+        >
+          {/* Optional video (prompts.md: autoPlay, loop, muted, playsInline) */}
+          {showVideo && (
+            <video
+              className="pointer-events-none absolute inset-0 z-0 size-full object-cover opacity-[0.35] dark:opacity-[0.28]"
+              autoPlay
+              loop
+              muted
+              playsInline
+              poster={backgroundPosterSrc || undefined}
+              aria-hidden
+            >
+              <source src={backgroundVideoSrc} type="video/mp4" />
+            </video>
+          )}
+
+          {/* Editorial gradient + vignette (works with or without video) */}
+          <div
+            className={cn(
+              'pointer-events-none absolute inset-0 z-[1]',
+              'from-primary/15 via-muted/60 to-background bg-gradient-to-br',
+              'bg-[radial-gradient(ellipse_120%_80%_at_50%_-20%,oklch(0.55_0.18_277/0.18),transparent_55%)]',
+            )}
+            aria-hidden
+          />
+          <div
+            className="from-background via-background/85 pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t to-transparent"
+            aria-hidden
+          />
+
+          {reduceMotion && backgroundPosterSrc ? (
             <div
-              className="group inline-flex cursor-pointer items-center self-end rounded-md border border-dashed border-black/20 bg-black/5 px-2 py-1 text-sm text-black shadow-[0_0_5px_rgba(0,0,0,0.1)] transition-all dark:border-white/30 dark:bg-white/15 dark:text-white dark:shadow-[0_0_5px_rgba(255,255,255,0.1)]"
+              className="pointer-events-none absolute inset-0 z-0 bg-cover bg-center opacity-30 dark:opacity-25"
+              style={{ backgroundImage: `url(${backgroundPosterSrc})` }}
+              aria-hidden
+            />
+          ) : null}
+
+          <CardHeader className="border-border/60 bg-card/75 relative z-10 border-b px-6 py-6 backdrop-blur-md sm:px-8">
+            <CardTitle className="font-display text-lg">Cal.com</CardTitle>
+            <CardDescription className="text-base leading-relaxed">
+              {preText}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="bg-card/60 relative z-10 flex justify-center px-6 py-8 backdrop-blur-sm sm:justify-end sm:px-8">
+            <Button
+              variant="default"
+              size="lg"
+              className="btn-inner-shadow"
               onClick={handleButtonClick}
             >
-              <div className="relative z-20 flex items-center gap-2 transition-all duration-300 group-hover:gap-8">
-                <div className="h-5 w-5 flex-shrink-0 overflow-hidden rounded-full">
-                  <Image
-                    alt={profileAlt}
-                    width={20}
-                    height={20}
-                    className="h-full w-full object-cover"
-                    src={profileImage}
-                    style={{ color: 'transparent' }}
-                  />
-                </div>
-                <div className="absolute left-[24px] flex -translate-x-full transform items-center gap-0 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-3 w-3"
-                  >
-                    <path d="M5 12h14"></path>
-                    <path d="M12 5v14"></path>
-                  </svg>
-                  <div className="mr-2 ml-1 flex h-5 w-5 items-center justify-center rounded-full bg-black/10 text-[8px] dark:bg-white/10">
-                    You
-                  </div>
-                </div>
-                <span className="relative ml-0 block text-sm font-bold whitespace-nowrap transition-all duration-300 group-hover:ml-4">
-                  {linkText}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+              {linkText}
+            </Button>
+          </CardContent>
+          <CardFooter className="border-border/50 bg-card/75 relative z-10 border-t px-6 py-3 text-xs backdrop-blur-md sm:px-8">
+            <p className="text-muted-foreground">
+              Opens a secure Cal.com window — pick a slot that works for you.
+            </p>
+          </CardFooter>
+        </Card>
       </Container>
 
-      {/* Cal.com Dialog */}
       <Dialog open={showCalPopup} onOpenChange={setShowCalPopup}>
         <DialogContent className="max-h-[90vh] max-w-[calc(100vw-2rem)] overflow-hidden sm:max-w-[calc(100vw-4rem)] md:max-w-4xl">
           <DialogHeader>
-            <DialogTitle>Book a Meeting</DialogTitle>
+            <DialogTitle>Book a meeting</DialogTitle>
             <DialogDescription>
-              Schedule a time to connect and discuss opportunities
+              Pick a time to connect about opportunities or collaborations.
             </DialogDescription>
           </DialogHeader>
 
-          <div className="max-h-[calc(90vh-220px)] overflow-y-auto rounded-lg">
+          <div className="max-h-[calc(90vh-220px)] overflow-y-auto rounded-lg border">
             <Cal
               calLink={calLink}
               config={{

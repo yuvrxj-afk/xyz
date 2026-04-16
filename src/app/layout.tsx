@@ -1,15 +1,31 @@
 import UmamiAnalytics from '@/components/analytics/UmamiAnalytics';
-import ChatBubble from '@/components/common/ChatBubble';
 import Footer from '@/components/common/Footer';
 import Navbar from '@/components/common/Navbar';
-import OnekoCat from '@/components/common/OnekoCat';
-import { Quote } from '@/components/common/Quote';
 import { ThemeProvider } from '@/components/common/ThemeProviders';
 import { generateMetadata as getMetadata } from '@/config/Meta';
 import ReactLenis from 'lenis/react';
 import { ViewTransitions } from 'next-view-transitions';
+import { Barlow, Instrument_Serif, Space_Grotesk } from 'next/font/google';
 
 import './globals.css';
+
+const barlow = Barlow({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600'],
+  variable: '--font-barlow',
+});
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ['latin'],
+  weight: '400',
+  style: ['normal', 'italic'],
+  variable: '--font-instrument',
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-hero-display',
+});
 
 export const metadata = getMetadata('/');
 
@@ -21,7 +37,9 @@ export default function RootLayout({
   return (
     <ViewTransitions>
       <html lang="en" suppressHydrationWarning>
-        <body className={`font-hanken-grotesk antialiased`}>
+        <body
+          className={`${barlow.variable} ${instrumentSerif.variable} ${spaceGrotesk.variable} ${barlow.className} antialiased`}
+        >
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -30,11 +48,8 @@ export default function RootLayout({
           >
             <ReactLenis root>
               <Navbar />
-              {children}
-              <OnekoCat />
-              <Quote />
+              <div className="pt-16 md:pt-[4.5rem]">{children}</div>
               <Footer />
-              <ChatBubble />
               <UmamiAnalytics />
             </ReactLenis>
           </ThemeProvider>

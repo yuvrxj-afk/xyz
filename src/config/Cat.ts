@@ -1,3 +1,4 @@
-export const catConfig = {
-  enabled: true, // Set to false to disable the cat
+/** Neko-style cursor pet (oneko.js + sprite). */
+export const onekoConfig = {
+  enabled: true,
 };

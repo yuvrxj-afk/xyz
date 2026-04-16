@@ -1,27 +1,62 @@
-import Container from '@/components/common/Container';
 import About from '@/components/landing/About';
 import Blog from '@/components/landing/Blog';
 import CTA from '@/components/landing/CTA';
 import Experience from '@/components/landing/Experience';
 import Github from '@/components/landing/Github';
 import Hero from '@/components/landing/Hero';
-import Journey from '@/components/landing/Journey';
 import Work from '@/components/landing/Projects';
-import Setup from '@/components/landing/Setup';
 import React from 'react';
 
 export default function page() {
   return (
-    <Container className="min-h-screen py-16">
-      <Hero />
-      <Experience />
-      <Work />
-      <About />
-      <Github />
-      <Blog />
-      <CTA />
-      <Setup />
-      <Journey />
-    </Container>
+    <main className="min-h-screen">
+      <section
+        id="intro"
+        aria-label="Introduction"
+        className="scroll-mt-28 px-0"
+      >
+        <Hero />
+      </section>
+
+      <section
+        id="experience"
+        aria-label="Work experience"
+        className="border-border/60 bg-muted/35 scroll-mt-24 border-y py-16 md:py-24"
+      >
+        <Experience />
+      </section>
+
+      <section
+        aria-label="Featured projects"
+        className="scroll-mt-24 py-16 md:py-24"
+      >
+        <Work />
+      </section>
+
+      <section
+        aria-label="About"
+        className="border-border/50 bg-muted/25 scroll-mt-24 border-y py-16 md:py-24"
+      >
+        <About />
+      </section>
+
+      <section aria-label="GitHub" className="scroll-mt-24 py-16 md:py-24">
+        <Github />
+      </section>
+
+      <section
+        aria-label="Blog"
+        className="border-border/50 bg-muted/35 scroll-mt-24 border-y py-16 md:py-24"
+      >
+        <Blog />
+      </section>
+
+      <section
+        aria-label="Contact"
+        className="scroll-mt-24 py-16 md:pt-24 md:pb-24"
+      >
+        <CTA />
+      </section>
+    </main>
   );
 }

@@ -31,7 +31,7 @@ interface Message {
 const initialMessages: Message[] = [
   {
     id: 1,
-    text: "Hello! I'm Ram's Portfolio Assistant. How can I help you?",
+    text: `Hi — I'm a quick assistant for ${heroConfig.displayName}'s portfolio. What would you like to know?`,
     sender: 'bot',
     timestamp: new Date().toLocaleTimeString([], {
       hour: '2-digit',
@@ -262,7 +262,7 @@ const ChatBubble: React.FC = () => {
           </Avatar>
           <div>
             <h3 className="text-sm font-semibold">
-              {heroConfig.name}&apos;s Portfolio Assistant
+              {heroConfig.displayName.split(' ')[0]}&apos;s Portfolio Assistant
             </h3>
             <div className="text-muted-foreground text-xs">
               <div className="flex items-center gap-1">

@@ -31,7 +31,12 @@ export function BlogCard({ post }: BlogCardProps) {
       <CardHeader className="p-0">
         <div className="relative aspect-video overflow-hidden">
           <Link href={`/blog/${slug}`}>
-            <Image src={image} alt={title} fill className="object-cover" />
+            <Image
+              src={image}
+              alt={title}
+              fill
+              className="object-cover brightness-[1.04] contrast-[1.02] dark:brightness-[1.06]"
+            />
           </Link>
         </div>
       </CardHeader>

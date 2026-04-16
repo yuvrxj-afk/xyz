@@ -18,6 +18,9 @@ package-lock.json
 /.next/
 /out/
 
+# temp move of src/app/api during static export (scripts/build-github-pages.cjs)
+.tmp-api-backup-for-gh-pages/
+
 # production
 /build
 

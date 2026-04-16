@@ -4,12 +4,8 @@ export interface NavItem {
 }
 
 export const navbarConfig = {
-  logo: {
-    src: '/assets/logo.png',
-    alt: 'logo',
-    width: 100,
-    height: 100,
-  },
+  /** Text logo — links home. */
+  wordmark: 'yuvrxj',
   navItems: [
     {
       label: 'Work',

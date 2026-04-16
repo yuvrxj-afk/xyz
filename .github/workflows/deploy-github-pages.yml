@@ -1,0 +1,59 @@
+# Next.js static export → GitHub Pages.
+# Enable: Settings → Pages → Source: GitHub Actions.
+
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.4
+
+      - name: Install
+        run: bun install --frozen-lockfile
+
+      - name: Base path for Project Pages
+        id: base
+        shell: bash
+        run: |
+          REPO="${{ github.event.repository.name }}"
+          OWNER="${{ github.repository_owner }}"
+          LOWER_OWNER=$(echo "$OWNER" | tr '[:upper:]' '[:lower:]')
+          if [ "$REPO" = "${LOWER_OWNER}.github.io" ]; then
+            echo "path=" >> "$GITHUB_OUTPUT"
+          else
+            echo "path=/${REPO}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Static build
+        run: bun run build:gh-pages
+        env:
+          BASE_PATH: ${{ steps.base.outputs.path }}
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

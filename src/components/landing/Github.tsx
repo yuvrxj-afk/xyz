@@ -1,14 +1,20 @@
 'use client';
 
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import { githubConfig } from '@/config/Github';
+import { Github as GithubLucide } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import Container from '../common/Container';
+import SectionHeading from '../common/SectionHeading';
 import GithubIcon from '../svgs/Github';
-import { Button } from '../ui/button';
 
 const ActivityCalendar = dynamic(
   () => import('react-activity-calendar').then((mod) => mod.default),
@@ -32,7 +38,6 @@ type GitHubContributionResponse = {
     | 'FOURTH_QUARTILE';
 };
 
-// Helper function to filter contributions to past year
 function filterLastYear(contributions: ContributionItem[]): ContributionItem[] {
   const oneYearAgo = new Date();
   oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
@@ -60,10 +65,8 @@ export default function Github() {
         const data: { contributions?: unknown[] } = await response.json();
 
         if (data?.contributions && Array.isArray(data.contributions)) {
-          // Flatten the nested array structure
           const flattenedContributions = data.contributions.flat();
 
-          // Convert contribution levels to numbers
           const contributionLevelMap = {
             NONE: 0,
             FIRST_QUARTILE: 1,
@@ -72,7 +75,6 @@ export default function Github() {
             FOURTH_QUARTILE: 4,
           };
 
-          // Transform to the expected format
           const validContributions = flattenedContributions
             .filter(
               (item: unknown): item is GitHubContributionResponse =>
@@ -91,14 +93,12 @@ export default function Github() {
             }));
 
           if (validContributions.length > 0) {
-            // Calculate total contributions
             const total = validContributions.reduce(
               (sum, item) => sum + item.count,
               0,
             );
             setTotalContributions(total);
 
-            // Filter to show only the past year
             const filteredContributions = filterLastYear(validContributions);
             setContributions(filteredContributions);
           } else {
@@ -119,61 +119,56 @@ export default function Github() {
   }, []);
 
   return (
-    <Container className="mt-20">
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-foreground text-2xl font-bold">
-              {githubConfig.title}
-            </h2>
-            <p className="text-muted-foreground text-sm">
-              <b>{githubConfig.username}</b>&apos;s {githubConfig.subtitle}
-            </p>
-            {!isLoading && !hasError && totalContributions > 0 && (
-              <p className="text-primary mt-1 text-sm font-medium">
-                Total:{' '}
-                <span className="font-black">
-                  {totalContributions.toLocaleString()}
-                </span>{' '}
-                contributions
-              </p>
-            )}
-          </div>
+    <Container className="mt-0">
+      <SectionHeading subHeading="Open source" heading="GitHub" />
+      <p className="text-muted-foreground mt-3 text-sm">
+        <span className="text-foreground font-medium">
+          {githubConfig.username}
+        </span>
+        &nbsp;· {githubConfig.subtitle}
+      </p>
+      {!isLoading && !hasError && totalContributions > 0 && (
+        <div className="mt-3">
+          <Badge variant="secondary">
+            {totalContributions.toLocaleString()} contributions (range shown)
+          </Badge>
         </div>
+      )}
 
-        {/* Content */}
+      <div className="mt-8 flex flex-col gap-6">
         {isLoading ? (
-          <div className="flex items-center justify-center py-16">
-            <div className="text-center">
-              <div className="border-primary mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-t-transparent"></div>
-              <p className="text-muted-foreground text-sm">
+          <Card className="shadow-sm">
+            <CardContent className="flex flex-col gap-4 py-10">
+              <Skeleton className="h-36 w-full rounded-lg" />
+              <div className="flex flex-wrap gap-2">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-4 w-32" />
+              </div>
+              <p className="text-muted-foreground text-center text-sm">
                 {githubConfig.loadingState.description}
               </p>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         ) : hasError || contributions.length === 0 ? (
-          <div className="text-muted-foreground border-border rounded-xl border-2 border-dashed p-8 text-center">
-            <div className="bg-muted mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full">
-              <GithubIcon className="h-8 w-8" />
-            </div>
-            <p className="mb-2 font-medium">{githubConfig.errorState.title}</p>
-            <p className="mb-4 text-sm">
-              {githubConfig.errorState.description}
-            </p>
-            <Button variant="outline" asChild>
-              <Link
-                href={`https://github.com/${githubConfig.username}`}
-                className="inline-flex items-center gap-2"
-              >
-                <GithubIcon className="h-4 w-4" />
-                {githubConfig.errorState.buttonText}
-              </Link>
-            </Button>
-          </div>
+          <Alert className="border-dashed">
+            <GithubLucide className="size-4" />
+            <AlertTitle>{githubConfig.errorState.title}</AlertTitle>
+            <AlertDescription className="flex flex-col gap-4">
+              <p>{githubConfig.errorState.description}</p>
+              <Button variant="outline" asChild>
+                <Link
+                  href={`https://github.com/${githubConfig.username}`}
+                  className="inline-flex w-fit items-center gap-2"
+                >
+                  <GithubIcon className="size-4" />
+                  {githubConfig.errorState.buttonText}
+                </Link>
+              </Button>
+            </AlertDescription>
+          </Alert>
         ) : (
-          <div className="relative overflow-hidden">
-            <div className="bg-background/50 relative rounded-lg border border-dashed border-black/20 p-6 backdrop-blur-sm dark:border-white/10">
+          <Card className="shadow-sm">
+            <CardContent className="pt-6">
               <div className="w-full overflow-x-auto">
                 <ActivityCalendar
                   data={contributions}
@@ -192,12 +187,12 @@ export default function Github() {
                     totalCount: githubConfig.totalCountLabel,
                   }}
                   style={{
-                    color: 'rgb(139, 148, 158)',
+                    color: 'var(--muted-foreground)',
                   }}
                 />
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         )}
       </div>
     </Container>

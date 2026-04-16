@@ -1,15 +1,21 @@
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { type Experience } from '@/config/Experience';
 import { cn } from '@/lib/utils';
 import { Link } from 'next-view-transitions';
 import Image from 'next/image';
 import React from 'react';
 
-import Skill from '../common/Skill';
 import Github from '../svgs/Github';
 import LinkedIn from '../svgs/LinkedIn';
 import Website from '../svgs/Website';
 import X from '../svgs/X';
-import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
 interface ExperienceCardProps {
   experience: Experience;
@@ -21,133 +27,165 @@ const parseDescription = (text: string): string => {
 
 export function ExperienceCard({ experience }: ExperienceCardProps) {
   return (
-    <div className="flex flex-col gap-4">
-      {/* Company Header */}
-      <div className="flex flex-col gap-2 md:flex-row md:justify-between">
-        {/* Left Side */}
-        <div className="flex items-center gap-4">
-          <Image
-            src={experience.image}
-            alt={experience.company}
-            width={100}
-            height={100}
-            className="size-12 rounded-md"
-          />
-          <div className="flex flex-col">
-            <div className="flex items-center gap-2">
-              <h3
-                className={cn(
-                  'text-lg font-bold',
-                  experience.isBlur ? 'blur-[5px]' : 'blur-none',
+    <Card className="gap-0 py-0 shadow-sm">
+      <CardHeader className="flex flex-col gap-4 border-b px-6 py-6">
+        <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+          <div className="flex flex-row gap-4">
+            <Image
+              src={experience.image}
+              alt={experience.company}
+              width={48}
+              height={48}
+              className="border-border size-12 shrink-0 rounded-md border object-cover brightness-[1.06] contrast-[1.03] dark:brightness-110 dark:contrast-[1.04]"
+            />
+            <div className="flex min-w-0 flex-col gap-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <CardTitle
+                  className={cn(
+                    'text-lg',
+                    experience.isBlur ? 'blur-[5px]' : 'blur-none',
+                  )}
+                >
+                  {experience.company}
+                </CardTitle>
+                {experience.website && (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="size-8"
+                        asChild
+                      >
+                        <Link
+                          href={experience.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Website />
+                        </Link>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Website</TooltipContent>
+                  </Tooltip>
                 )}
-              >
-                {experience.company}
-              </h3>
-              {experience.website && (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Link
-                      href={experience.website}
-                      target="_blank"
-                      className="size-4 text-neutral-500"
-                    >
-                      <Website />
-                    </Link>
-                  </TooltipTrigger>
-                  <TooltipContent>Visit Website</TooltipContent>
-                </Tooltip>
-              )}
-              {experience.x && (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Link
-                      href={experience.x}
-                      target="_blank"
-                      className="size-4 text-neutral-500"
-                    >
-                      <X />
-                    </Link>
-                  </TooltipTrigger>
-                  <TooltipContent>Follow on X</TooltipContent>
-                </Tooltip>
-              )}
-              {experience.linkedin && (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Link
-                      href={experience.linkedin}
-                      target="_blank"
-                      className="size-4 text-neutral-500"
-                    >
-                      <LinkedIn />
-                    </Link>
-                  </TooltipTrigger>
-                  <TooltipContent>Connect on LinkedIn</TooltipContent>
-                </Tooltip>
-              )}
-              {experience.github && (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Link
-                      href={experience.github}
-                      target="_blank"
-                      className="size-4 text-neutral-500"
-                    >
-                      <Github />
-                    </Link>
-                  </TooltipTrigger>
-                  <TooltipContent>View GitHub</TooltipContent>
-                </Tooltip>
-              )}
-              {experience.isCurrent && (
-                <div className="flex items-center gap-1 rounded-md border-green-300 bg-green-500/10 px-2 py-1 text-xs">
-                  <div className="size-2 animate-pulse rounded-full bg-green-500"></div>
-                  Working
-                </div>
-              )}
+                {experience.x && (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="size-8"
+                        asChild
+                      >
+                        <Link
+                          href={experience.x}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <X />
+                        </Link>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>X</TooltipContent>
+                  </Tooltip>
+                )}
+                {experience.linkedin && (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="size-8"
+                        asChild
+                      >
+                        <Link
+                          href={experience.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <LinkedIn />
+                        </Link>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>LinkedIn</TooltipContent>
+                  </Tooltip>
+                )}
+                {experience.github && (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="size-8"
+                        asChild
+                      >
+                        <Link
+                          href={experience.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Github />
+                        </Link>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>GitHub</TooltipContent>
+                  </Tooltip>
+                )}
+                {experience.isCurrent && (
+                  <Badge variant="secondary" className="gap-1.5 font-normal">
+                    <span
+                      className="bg-primary size-1.5 shrink-0 animate-pulse rounded-full"
+                      aria-hidden
+                    />
+                    Working
+                  </Badge>
+                )}
+              </div>
+              <p className="text-muted-foreground text-sm">
+                {experience.position}
+              </p>
             </div>
-            <p>{experience.position}</p>
+          </div>
+          <div className="text-muted-foreground flex flex-col gap-0.5 text-sm md:items-end md:text-right">
+            <p>
+              {experience.startDate} —{' '}
+              {experience.isCurrent ? 'Present' : experience.endDate}
+            </p>
+            <p>{experience.location}</p>
           </div>
         </div>
-        {/* Right Side */}
-        <div className="text-secondary flex flex-col md:text-right">
-          <p>
-            {experience.startDate} -{' '}
-            {experience.isCurrent ? 'Present' : experience.endDate}
-          </p>
-          <p>{experience.location}</p>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-5 px-6 py-6">
+        <div>
+          <p className="text-sm font-medium">Technologies</p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {experience.technologies.map((technology, techIndex: number) => (
+              <Badge key={techIndex} variant="outline" asChild>
+                <Link
+                  href={technology.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {technology.name}
+                </Link>
+              </Badge>
+            ))}
+          </div>
         </div>
-      </div>
-
-      {/* Technologies */}
-      <div>
-        <h4 className="text-md mt-4 mb-2 font-semibold">Technologies</h4>
-        <div className="flex flex-wrap gap-2">
-          {experience.technologies.map((technology, techIndex: number) => (
-            <Skill
-              key={techIndex}
-              name={technology.name}
-              href={technology.href}
-            >
-              {technology.icon}
-            </Skill>
-          ))}
+        <div className="text-muted-foreground flex flex-col gap-2 text-sm leading-relaxed">
+          {experience.description.map(
+            (description: string, descIndex: number) => (
+              <p
+                key={descIndex}
+                dangerouslySetInnerHTML={{
+                  __html: `• ${parseDescription(description)}`,
+                }}
+              />
+            ),
+          )}
         </div>
-      </div>
-
-      {/* Description */}
-      <div className="text-secondary flex flex-col">
-        {experience.description.map(
-          (description: string, descIndex: number) => (
-            <p
-              key={descIndex}
-              dangerouslySetInnerHTML={{
-                __html: `• ${parseDescription(description)}`,
-              }}
-            />
-          ),
-        )}
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }

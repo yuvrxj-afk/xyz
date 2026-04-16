@@ -9,191 +9,169 @@ export interface PageMeta {
   twitterCard?: 'summary' | 'summary_large_image';
 }
 
+const avatarIcon = heroConfig.avatar;
+
 // Base site configuration
 export const siteConfig = {
-  name: heroConfig.name,
-  title: 'Sleek Portfolio',
-  description: 'Sleek Portfolio Template by @Ramxcodes',
+  name: heroConfig.displayName,
+  /** Short browser / OG site name */
+  title: heroConfig.handle,
+  description:
+    'Full-stack engineer focused on Web3, onchain products, and AI-assisted tooling.',
   url: process.env.NEXT_PUBLIC_URL || 'http://localhost:3000',
   ogImage: '/meta/opengraph-image.png',
   author: {
     name: about.name,
-    twitter: '@ramxcodes',
-    github: 'ramxcodes',
-    linkedin: 'ramxcodes',
-    email: 'ramxcodes@gmail.com',
+    twitter: '@yuvrxj7',
+    github: 'yuvrxj-afk',
+    linkedin: 'yuvrajsinghsisodiya',
+    email: 'yuvrajsisodiya7302@gmail.com',
   },
   keywords: [
     'portfolio',
-    'developer',
-    'full-stack',
-    'react',
+    'web3',
+    'blockchain',
+    'defi',
+    'solidity',
     'nextjs',
     'typescript',
-    'web development',
-    heroConfig.name.toLowerCase(),
+    'full-stack',
+    heroConfig.handle.toLowerCase(),
+    heroConfig.displayName.toLowerCase(),
   ],
 };
 
 export const pageMetadata: Record<string, PageMeta> = {
-  // Home page
   '/': {
-    title: `${heroConfig.name} - ${heroConfig.title}`,
-    description: `${about.description} Explore my projects, experience, and technical expertise.`,
-    keywords: [
-      'portfolio',
-      'developer',
-      'full-stack',
-      'web development',
-      'projects',
-    ],
+    title: heroConfig.displayName,
+    description: `${heroConfig.title} — ${about.description}`,
+    keywords: ['portfolio', 'developer', 'full-stack', 'web3', 'typescript'],
     ogImage: '/meta/hero.png',
     twitterCard: 'summary_large_image',
   },
 
-  // Contact page
   '/contact': {
-    title: 'Contact - Get in Touch',
+    title: 'Contact',
     description:
-      "Get in touch with me for collaborations, projects, or opportunities. I'd love to hear from you!",
-    keywords: ['contact', 'hire', 'collaboration', 'freelance', 'developer'],
+      'Reach out for collaborations, contracts, or product work—form or socials.',
+    keywords: ['contact', 'hire', 'collaboration', 'developer'],
     ogImage: '/assets/logo.png',
     twitterCard: 'summary',
   },
 
-  // Work Experience page
   '/work-experience': {
-    title: 'Work Experience - Professional Journey',
+    title: 'Work',
     description:
-      'Explore my professional work experience across different companies and roles in software development.',
-    keywords: [
-      'work experience',
-      'career',
-      'professional',
-      'software developer',
-      'employment history',
-    ],
+      'Professional experience across product engineering, Web3, and full-stack delivery.',
+    keywords: ['work experience', 'career', 'software developer'],
     ogImage: '/meta/work.png',
     twitterCard: 'summary_large_image',
   },
 
-  // Projects page
   '/projects': {
-    title: 'Projects - My Work & Projects Portfolio',
+    title: 'Projects',
     description:
-      'Discover my projects and work across different technologies and domains. From web apps to mobile solutions.',
-    keywords: [
-      'projects',
-      'portfolio',
-      'web development',
-      'applications',
-      'software',
-    ],
+      'Selected builds: protocols, apps, and experiments across Web3 and the web.',
+    keywords: ['projects', 'portfolio', 'web development', 'web3'],
     ogImage: '/meta/projects.png',
     twitterCard: 'summary_large_image',
   },
 
-  // Blog page
   '/blog': {
-    title: 'Blog - Thoughts & Tutorials',
-    description:
-      'Read my thoughts, tutorials, and insights on engineering, programming, and web development.',
-    keywords: [
-      'blog',
-      'tutorials',
-      'programming',
-      'web development',
-      'technical writing',
-    ],
+    title: 'Blog',
+    description: 'Notes on engineering, Web3, and shipping useful software.',
+    keywords: ['blog', 'engineering', 'web development'],
     ogImage: '/meta/blogs.png',
     twitterCard: 'summary_large_image',
   },
 
-  // Resume page
   '/resume': {
-    title: 'Resume - Professional CV',
-    description: `View and download ${heroConfig.name}'s professional resume and CV. Technical skills, experience, and qualifications.`,
-    keywords: [
-      'resume',
-      'cv',
-      'professional',
-      'skills',
-      'qualifications',
-      'download',
-    ],
+    title: 'Resume',
+    description: `Résumé and CV for ${heroConfig.displayName}—skills, experience, and impact.`,
+    keywords: ['resume', 'cv', 'skills'],
     ogImage: '/meta/resume.png',
     twitterCard: 'summary',
   },
 
-  // Gears page
   '/gears': {
-    title: 'Gears - My Setup & Tools',
-    description:
-      'Discover the tools, devices, and software I use to get my work done efficiently.',
-    keywords: [
-      'setup',
-      'tools',
-      'devices',
-      'software',
-      'productivity',
-      'development environment',
-    ],
+    title: 'Gears',
+    description: 'Hardware and gear I use day to day.',
+    keywords: ['setup', 'tools', 'gear'],
     ogImage: '/meta/gears.png',
     twitterCard: 'summary_large_image',
   },
 
-  // Setup page
   '/setup': {
-    title: 'Setup Guide - VS Code Configuration',
-    description:
-      'Complete guide to setting up VS Code with my preferred configuration, extensions, and fonts for optimal development.',
-    keywords: [
-      'vscode',
-      'setup',
-      'configuration',
-      'extensions',
-      'development environment',
-      'guide',
-    ],
+    title: 'Setup',
+    description: 'Editor, extensions, and environment preferences.',
+    keywords: ['vscode', 'cursor', 'development environment'],
     ogImage: '/meta/setup.png',
     twitterCard: 'summary_large_image',
   },
+
+  '/journey': {
+    title: 'Journey',
+    description: 'Background, milestones, and how I got here.',
+    keywords: ['journey', 'career', 'background'],
+    ogImage: '/meta/hero.png',
+    twitterCard: 'summary_large_image',
+  },
+
+  '/journey/certificates': {
+    title: 'Certificates',
+    description: 'Certifications and formal credentials.',
+    keywords: ['certificates', 'credentials'],
+    ogImage: '/meta/hero.png',
+    twitterCard: 'summary',
+  },
 };
 
-// Helper function to get metadata for a specific page
 export function getPageMetadata(pathname: string): PageMeta {
   return pageMetadata[pathname] || pageMetadata['/'];
 }
 
-// Helper function to generate complete metadata object for Next.js
 export function generateMetadata(pathname: string) {
   const pageMeta = getPageMetadata(pathname);
+  const isHome = pathname === '/';
 
   return {
     metadataBase: new URL(siteConfig.url),
-    title: pageMeta.title,
+    title: isHome
+      ? {
+          default: heroConfig.displayName,
+          template: `%s · ${heroConfig.handle}`,
+        }
+      : pageMeta.title,
     description: pageMeta.description,
     keywords: pageMeta.keywords?.join(', '),
     authors: [{ name: siteConfig.author.name }],
     creator: siteConfig.author.name,
+    icons: {
+      icon: [{ url: avatarIcon, type: 'image/png' }],
+      apple: [{ url: avatarIcon, type: 'image/png', sizes: '180x180' }],
+    },
     openGraph: {
       type: 'website',
       url: `${siteConfig.url}${pathname}`,
-      title: pageMeta.title,
+      title: isHome
+        ? heroConfig.displayName
+        : `${pageMeta.title} · ${heroConfig.handle}`,
       description: pageMeta.description,
-      siteName: siteConfig.title,
+      siteName: heroConfig.handle,
       images: [
         {
           url: pageMeta.ogImage || siteConfig.ogImage,
           width: 1200,
           height: 630,
-          alt: pageMeta.title,
+          alt: isHome ? heroConfig.displayName : pageMeta.title,
         },
       ],
     },
     twitter: {
       card: pageMeta.twitterCard || 'summary_large_image',
-      title: pageMeta.title,
+      title: isHome
+        ? heroConfig.displayName
+        : `${pageMeta.title} · ${heroConfig.handle}`,
       description: pageMeta.description,
       creator: siteConfig.author.twitter,
       images: [pageMeta.ogImage || siteConfig.ogImage],
