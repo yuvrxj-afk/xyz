@@ -1,5 +1,6 @@
 'use client';
 
+import { withBasePath } from '@/lib/basePath';
 import { cn } from '@/lib/utils';
 import React, { useEffect, useRef } from 'react';
 
@@ -136,7 +137,8 @@ export function HeroBackgroundVideo({
     };
   }, [src, playbackRate]);
 
-  const poster = posterSrc || undefined;
+  const resolvedSrc = withBasePath(src);
+  const poster = posterSrc ? withBasePath(posterSrc) : undefined;
 
   return (
     <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden>
@@ -153,7 +155,7 @@ export function HeroBackgroundVideo({
           preload="auto"
           poster={poster}
         >
-          <source src={src} type="video/mp4" />
+          <source src={resolvedSrc} type="video/mp4" />
         </video>
       </div>
       <div
@@ -169,7 +171,7 @@ export function HeroBackgroundVideo({
           preload="auto"
           poster={poster}
         >
-          <source src={src} type="video/mp4" />
+          <source src={resolvedSrc} type="video/mp4" />
         </video>
       </div>
     </div>

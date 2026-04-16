@@ -5,7 +5,12 @@ const basePath = (process.env.BASE_PATH || '').trim().replace(/\/$/, '');
 
 const nextConfig: NextConfig = {
   ...(staticExport && { output: 'export' as const }),
+  /** GitHub Pages project sites need trailing slash for clean directory URLs. */
+  ...(staticExport && { trailingSlash: true }),
   ...(basePath ? { basePath, assetPrefix: basePath } : {}),
+  env: {
+    NEXT_PUBLIC_BASE_PATH: basePath,
+  },
   images: {
     ...(staticExport ? { unoptimized: true } : {}),
     remotePatterns: [

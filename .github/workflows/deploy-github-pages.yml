@@ -33,13 +33,14 @@ jobs:
       - name: Install
         run: bun install --frozen-lockfile
 
-      - name: Base path for Project Pages
+      - name: Base path and public URL for build
         id: base
         shell: bash
         run: |
           REPO="${{ github.event.repository.name }}"
           OWNER="${{ github.repository_owner }}"
           LOWER_OWNER=$(echo "$OWNER" | tr '[:upper:]' '[:lower:]')
+          echo "url=https://${LOWER_OWNER}.github.io" >> "$GITHUB_OUTPUT"
           if [ "$REPO" = "${LOWER_OWNER}.github.io" ]; then
             echo "path=" >> "$GITHUB_OUTPUT"
           else
@@ -50,6 +51,7 @@ jobs:
         run: bun run build:gh-pages
         env:
           BASE_PATH: ${{ steps.base.outputs.path }}
+          NEXT_PUBLIC_URL: ${{ steps.base.outputs.url }}
 
       - uses: actions/upload-pages-artifact@v3
         with:

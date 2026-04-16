@@ -4,7 +4,7 @@ import { ProjectNavigation } from '@/components/projects/ProjectNavigation';
 import ArrowLeft from '@/components/svgs/ArrowLeft';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { siteConfig } from '@/config/Meta';
+import { absolutePublicUrl, siteRoot } from '@/lib/basePath';
 import {
   getProjectCaseStudyBySlug,
   getProjectCaseStudySlugs,
@@ -45,21 +45,23 @@ export async function generateMetadata({
 
   const { title, description, image } = caseStudy.frontmatter;
 
+  const metadataBase = new URL(`${siteRoot()}/`);
+
   return {
-    metadataBase: new URL(siteConfig.url),
+    metadataBase,
     title,
     description,
     openGraph: {
       title,
       description,
-      images: [image],
+      images: [absolutePublicUrl(image)],
       type: 'article',
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: [image],
+      images: [absolutePublicUrl(image)],
     },
   };
 }
